@@ -16,7 +16,7 @@ The next pricture shows how to define the configuration.
 
 ![Configurations inside VS Code 02](https://github.com/thomassuedbroecker/openwhisk-debug-nodejs/raw/master/images/vs-configurations-02.png "Debugging")
 
-_Note:_ Keep in mind you just **simply debug the normal technology**, before you upload or update the code into functions.
+_Note:_ Keep in mind you just **simply debug the normal technology**, before you upload or update the code into OpenWhisk.
 
 You don't need to use Docker to debug functions unless you want to write your functions in Docker containers. In the simplest case clone the repo, overwrite the samples in functions/singleFile with your own code and run the debug configurations.
 
@@ -37,7 +37,7 @@ The following screenshot shows how functions that run in Docker can be debugged 
 
 ## Prerequisites and Setup
 
-In order to run the code you need the following prerequisites and you need to set up your system.
+In order to use the **configurations** for your **visual studio code** you need the following prerequisites and you need to set up your system.
 
 **Prerequisites**
 
@@ -62,7 +62,7 @@ $ npm install
 $ code .
 ```
 
-_NOTE:_ Niklas has predefined several configurations to debug the open whisk sample inside the github.
+_NOTE:_ Niklas has predefined several configurations to debug the OpenWhisk sample inside the github.
 
 **Debugging from Visual Studio Code**
 
