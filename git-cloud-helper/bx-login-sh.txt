@@ -1,0 +1,50 @@
+#!/bin/bash
+# Information steps:
+# 1) chmod u+x git-commit.sh
+# 2) ./git-commit.sh
+
+API_ENDPOINT="https://api.ng.bluemix.net"
+IBMCLOUD_CLI_DEVOPS_PLATFORM_KEY=""
+USER_ID=""
+RESOURCE_GROUP=""
+ORGANIZATION_NAME=""
+SPACE_NAME=""
+
+MYPROMETHEUS_YML="NodeMircoserviceYo/prometheus.yml"
+MYPROMETHEUS_ETC_YML="/etc/prometheus/prometheus.yml"
+MYPROMETHEUS_NAME="prom/prometheus"
+
+echo "Starting here"
+pwd
+cd ..
+cd $MYPROMETHEUS_YML
+echo "Moved to here"
+pwd
+echo "IBM Cloud CLI login"
+echo "*****************"
+bx login -u $USER_ID  -o $ORGANIZATION_NAME -apikey $IBMCLOUD_CLI_DEVOPS_PLATFORM_KEY -s $SPACE_NAME -g $RESOURCE_GROUP -a $API_ENDPOINT
+bx info
+echo "1. Start openzipkin/zipkin"
+docker run -d -p 9411:9411 openzipkin/zipkin
+echo "1.1 List images"
+docker images -a
+echo "1.2 Start Prometheus"
+docker run -d -p 9090:9090 -v $MYPROMETHEUS_YML:$MYPROMETHEUS_ETC_YML $MYPROMETHEUS_NAME
+echo "1.2 List images"
+docker images -a
+# https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes
+# docker images -a | grep "XXX" | awk '{print $3}' | xargs docker rmi
+echo "2. Get the dev Credentials"
+ibmcloud dev get-credentials
+echo ""
+echo "3. Build the Application"
+echo "Press any key to move on: "
+read ANYKEY
+ibmcloud dev build
+echo "4. Run the Application"
+echo "Press any key to move on: "
+echo ""
+read ANYKEY
+ibmcloud dev run
+echo ""
+read ANYKEY

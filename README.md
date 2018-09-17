@@ -1,8 +1,22 @@
+**CUSTOMIZE VERSION OF THE PROJECT**
+
 # Debugging Node.js OpenWhisk Functions in VS Code
 
 This [project](https://github.com/nheidloff/openwhisk-debug-nodejs) shows how [Apache OpenWhisk](http://openwhisk.org/) functions can be developed and debugged locally via [Visual Studio Code](https://code.visualstudio.com/).
 
-This project doesn't contain a new tool or OpenWhisk extension. Instead it contains sample functions and configurations of VS Code that explain how to debug your own OpenWhisk functions.
+This project doesn't contain a new tool or OpenWhisk extension. Instead it contains sample functions and **configurations** of VS Code that explain how to debug your own OpenWhisk functions.
+
+_NOTE:_ It is important that you get familiar with the configurations, because this is more or less the magic part for the integration.
+
+In the following image you can see the where you can find the configurations for your visual studio code project.
+
+![Configurations inside VS Code 01](https://github.com/thomassuedbroecker/openwhisk-debug-nodejs/raw/master/images/vs-configurations-01.png "Debugging")
+
+The next pricture shows how to define the configuration.
+
+![Configurations inside VS Code 02](https://github.com/thomassuedbroecker/openwhisk-debug-nodejs/raw/master/images/vs-configurations-02.png "Debugging")
+
+_Note:_ Keep in mind you just **simply debug the normal technology**, before you upload or update the code into functions.
 
 You don't need to use Docker to debug functions unless you want to write your functions in Docker containers. In the simplest case clone the repo, overwrite the samples in functions/singleFile with your own code and run the debug configurations.
 
@@ -30,6 +44,7 @@ In order to run the code you need the following prerequisites and you need to se
 Make sure you have the following tools installed:
 
 * [Visual Studio Code](https://code.visualstudio.com/)
+   **You have to enable the cli in Visual Studio** "https://code.visualstudio.com/docs/setup/mac"
 * [Node](https://nodejs.org/en/download/)
 * [Docker](https://docs.docker.com/engine/installation/)
 * [git](https://git-scm.com/downloads)
@@ -38,7 +53,7 @@ Make sure you have the following tools installed:
 
 **Setup**
 
-Run the following commands:
+Run the following commands to open the **visual studio code** inside the current folder.
 
 ```sh
 $ git clone https://github.com/nheidloff/openwhisk-debug-nodejs.git
@@ -46,6 +61,8 @@ $ cd openwhisk-debug-nodejs
 $ npm install
 $ code .
 ```
+
+_NOTE:_ Niklas has predefined several configurations to debug the open whisk sample inside the github.
 
 **Debugging from Visual Studio Code**
 

@@ -1,0 +1,34 @@
+#!/bin/bash
+# Information steps:
+# 1) chmod u+x push-and-log.sh
+# 2) ./push-and-log.sh
+# cf api https://api.eu-gb.bluemix.net UK
+# cf api https://api.ng.bluemix.net US
+
+application_name=""
+
+API_ENDPOINT="https://api.ng.bluemix.net"
+IBMCLOUD_CLI_DEVOPS_PLATFORM_KEY=""
+USER_ID=""
+RESOURCE_GROUP="default"
+ORGANIZATION_NAME=""
+SPACE_NAME=""
+
+echo "IBM Cloud CLI login"
+echo "*****************"
+bx login -u $USER_ID  -o $ORGANIZATION_NAME -apikey $IBMCLOUD_CLI_DEVOPS_PLATFORM_KEY -s $SPACE_NAME -g $RESOURCE_GROUP -a $API_ENDPOINT
+bx info
+echo ""
+
+pwd
+cd ..
+pwd
+
+echo "--> Starting push and log CF $application_name"
+bx cf spaces
+echo "****** show existing apps *********"
+bx cf apps
+echo "******* push to CF ********"
+bx cf push  $application_name
+echo "******* start CF logging ********"
+bx cf logs  $application_name
