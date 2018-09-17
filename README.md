@@ -4,9 +4,13 @@
 
 This [project](https://github.com/nheidloff/openwhisk-debug-nodejs) shows how [Apache OpenWhisk](http://openwhisk.org/) functions can be developed and debugged locally via [Visual Studio Code](https://code.visualstudio.com/).
 
-This project doesn't contain a new tool or OpenWhisk extension. Instead it contains sample functions and **configurations** of VS Code that explain how to debug your own OpenWhisk functions.
+This project **doesn't** contain a new tool or OpenWhisk extension. 
 
-_NOTE:_ It is important that you get familiar with the configurations, because this is more or less the magic part for the integration.
+Instead it contains sample _functions_ and the **configurations** of VS Code that explains: 
+
+How to debug your own _functions_ code you want to execute in **OpenWhisk** or in **IBM Functions**.
+
+_NOTE:_ It is important that you get familiar with the visual studio code configurations, because this is more or less the **magic part** for the debugging.
 
 In the following image you can see the where you can find the configurations for your visual studio code project.
 
