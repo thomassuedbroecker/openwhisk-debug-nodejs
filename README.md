@@ -1,4 +1,4 @@
-**CUSTOMIZE VERSION OF THE PROJECT**
+**CUSTOMIZED VERSION OF THE PROJECT**
 
 # Debugging Node.js OpenWhisk Functions in VS Code
 
