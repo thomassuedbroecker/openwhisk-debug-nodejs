@@ -9,11 +9,13 @@ Instead it contains sample _functions_ and the **configurations** of VS Code tha
 _How to debug your own _functions_ code you want to execute in **OpenWhisk** or in **IBM Functions**._
 
 It is very useful that you get familiar with the visual studio code configurations, because this is more or less the **magic part** for the debugging.
+
+1. Where are configurations stored inside visual studio code?
 In the following image you can see the where you can find the **configurations** for your **visual studio code** project.
 
 ![Configurations inside VS Code 01](https://github.com/thomassuedbroecker/openwhisk-debug-nodejs/raw/master/images/vs-configurations-01.png "Debugging")
 
-The next pricture shows how to define the configuration.
+2. The next picture shows: Where to define the configuration?
 
 ![Configurations inside VS Code 02](https://github.com/thomassuedbroecker/openwhisk-debug-nodejs/raw/master/images/vs-configurations-02.png "Debugging")
 
