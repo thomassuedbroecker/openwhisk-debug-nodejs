@@ -53,7 +53,7 @@ Five different scenarios are supported by the different debugging configurations
 
 The following screenshot shows how functions that run in **Docker** can be debugged from Visual Studio Code. In order to do this, a volume is used to share the files between the IDE and the container and VS Code attaches a **remote debugger** to the **Docker container**. 
 
-You this has the advantage the functions can **be changed** in the IDE **without having to restart** the container. [nodemon](https://github.com/remy/nodemon) restarts the Node application in the container automatically when files change.
+This provides the advantage that the functions can **be changed** inside the IDE **without having to restart** the container. [nodemon](https://github.com/remy/nodemon) restarts the Node application in the container automatically when files change.
 
 ![alt text](https://github.com/nheidloff/openwhisk-debug-nodejs/raw/master/images/debugging-docker-3.png "Debugging")
 
