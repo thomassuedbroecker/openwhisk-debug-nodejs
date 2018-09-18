@@ -63,8 +63,9 @@ Watch the [video](https://www.youtube.com/watch?v=P9hpcOqQ3hw) to see this in ac
 
 ---
 ## 2 Prerequisites and Setup <a name="part02"></a>
-[->](#part01)
+[->](#part01) 
 In order to use the **configurations** for your **visual studio code** you need the following prerequisites and you need to set up your system.
+
 ---
 ### 2.1 Prerequisites
 [->](#part01)
