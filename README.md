@@ -4,16 +4,16 @@
 
 **Table of content**
 
-* 1 Motivation and introduction (#part01)
-* 2 Prerequisites and Setup (#part02)
-* 3 Using the debugging in Visual Studio Code for OpenWhisk functions (#part03)
-* 3.1 Debugging from Visual Studio Code (#part031)
-* 3.2 Debugging Single File Functions (#part032)
-* 3.3 Debugging Zipped Functions (#part033)
-* 3.4 Debugging Functions in Docker Containers (#part034)
-* 3.5 Debugging dockerized Functions (#part035)
-* 3.6 Debugging TypeScript Functions in Docker Containers (#part036)
-* 4 Additional Resources (#part04)
+* [1 Motivation and introduction](#part01)
+* [2 Prerequisites and Setup](#part02)
+* [3 Using the debugging in Visual Studio Code for OpenWhisk functions](#part03)
+* [3.1 Debugging from Visual Studio Code](#part031)
+* [3.2 Debugging Single File Functions](#part032)
+* [3.3 Debugging Zipped Functions](#part033)
+* [3.4 Debugging Functions in Docker Containers](#part034)
+* [3.5 Debugging dockerized Functions](#part035)
+* [3.6 Debugging TypeScript Functions in Docker Containers](#part036)
+* [4 Additional Resources](#part04)
 
 ## 1 Motivation and introduction
 
