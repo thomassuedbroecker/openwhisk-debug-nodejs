@@ -72,7 +72,8 @@ In order to use the **configurations** for your **visual studio code** you need 
 Make sure you have the following tools installed:
 
 * [Visual Studio Code](https://code.visualstudio.com/)
-   **You have to enable the cli in Visual Studio** "https://code.visualstudio.com/docs/setup/mac"
+   _Note:_ You have to enable the cli in Visual Studio Code! 
+   To do this, just take a look for Mac [here](https://code.visualstudio.com/docs/setup/mac)
 * [Node](https://nodejs.org/en/download/)
 * [Docker](https://docs.docker.com/engine/installation/)
 * [git](https://git-scm.com/downloads)
