@@ -27,6 +27,7 @@ _Note:_ Keep in mind you just **simply debug the normal technology**, before you
 
 You don't need to use Docker to debug functions unless you want to write your functions in Docker containers. In the simplest case clone the repo, overwrite the samples in functions/singleFile with your own code and run the debug configurations.
 
+---
 ### The supported scenarios 
 
 Five different scenarios are supported by the different debugging configurations.
@@ -47,11 +48,11 @@ You this has the advantage the functions can **be changed** in the IDE **without
 
 Watch the [video](https://www.youtube.com/watch?v=P9hpcOqQ3hw) to see this in action.
 
-
+---
 ### Prerequisites and Setup
 
 In order to use the **configurations** for your **visual studio code** you need the following prerequisites and you need to set up your system.
-
+---
 **Prerequisites**
 
 Make sure you have the following tools installed:
@@ -63,7 +64,7 @@ Make sure you have the following tools installed:
 * [git](https://git-scm.com/downloads)
 * [IBM Cloud account](https://ibm.biz/nheidloff)
 
-
+---
 **Setup**
 
 Run the following commands to open the **visual studio code** inside the current folder.
@@ -77,6 +78,7 @@ $ code .
 
 _NOTE:_ Niklas has predefined several configurations to debug the OpenWhisk sample inside the github.
 
+---
 **Debugging from Visual Studio Code**
 
 There are two ways to start the debugger in VS Code:
@@ -84,7 +86,7 @@ There are two ways to start the debugger in VS Code:
 * From the [debug page](https://github.com/nheidloff/openwhisk-debug-nodejs/blob/master/images/start-debugger-ui.png) choose the specific launch configuration
 * Open the [command palette](https://github.com/nheidloff/openwhisk-debug-nodejs/blob/master/images/start-debugger-palette-1.png) (⇧⌘P) and search for 'Debug: Select and Start Debugging' or enter 'debug se'. After this select the specific [launch configuration](https://github.com/nheidloff/openwhisk-debug-nodejs/blob/master/images/start-debugger-palette-2.png)
 
-
+---
 ## Debugging Single File Functions
 
 There are three sample functions:
@@ -93,12 +95,14 @@ There are three sample functions:
 * [functionAsynch.js](functions/singleFile/functionAsynch.js)
 * [functionAsychReject.js](functions/singleFile/functionAsychReject.js)
 
+---
 **Debugging**
 
 To run and debug the functions, you can define the input as JSON in [payload.json](payloads/payload.json). In order to debug the functions, set breakpoints in the code.
 
 Run the launch configurations 'function.js', 'functionAsynch.js' and 'functionAsychReject.js' to run and debug the functions - see [screenshot](https://github.com/nheidloff/openwhisk-debug-nodejs/blob/master/images/debugging-single-file-1.png).
 
+---
 **Deployment and Invocation**
 
 In order to deploy the functions to IBM Cloud Functions, replace 'your-ibm-cloud-organization' and 'your-ibm-cloud-space' and run the following commands:
@@ -118,11 +122,12 @@ $ bx wsk action invoke --blocking functionAsynchReject --param name Niklas
 
 After you've changed the functions and created them on IBM Cloud Functions, use 'bx wsk action update' instead of 'bx wsk action create'.
 
-
+---
 ## Debugging Zipped Functions
 
 There is a sample function [functionAsynch.js](functions/zip/functionAsynch.js) that shows how to use a npm module which is not supported by the standard [OpenWhisk Node runtime](https://hub.docker.com/r/openwhisk/nodejs6action/~/dockerfile/).
 
+---
 **Debugging**
 
 To run and debug the function, you can define the input as JSON in [payload.json](payloads/payload.json). In order to debug the function, set breakpoints in [functionAsynch.js](functions/zip/functionAsynch.js).
@@ -136,6 +141,7 @@ $ npm install
 
 Run the launch configurations 'zip' to run and debug the function - see [screenshot](https://github.com/nheidloff/openwhisk-debug-nodejs/blob/master/images/debugging-zip.png).
 
+---
 **Deployment and Invocation**
 
 In order to deploy the functions to IBM Cloud Functions, replace 'your-ibm-cloud-organization' and 'your-ibm-cloud-space' and run the following commands:
@@ -151,13 +157,14 @@ $ bx wsk action invoke --blocking zippedFunctionAsynch --param name Niklas
 
 After you've changed the function and created it on IBM Cloud Functions, use 'bx wsk action update' instead of 'bx wsk action create' in [deploy.sh](functions/zip/deploy.sh).
 
-
+---
 ## Debugging Functions in Docker Containers
 
 There is a sample function [function.js](functions/docker/function.js) that shows how to write an OpenWhisk function running in a container by implementing the endpoints '/init' and '/run'.
 
 The function can be changed in the IDE without having to restart the container after every change. Instead a mapped volume is used to share the files between the IDE and the container and [nodemon](https://github.com/remy/nodemon) restarts the Node application in the container automatically when files change.
 
+---
 **Debugging**
 
 Run the following commands in a terminal to run the container - see [screenshot](https://github.com/nheidloff/openwhisk-debug-nodejs/blob/master/images/debugging-docker-1.png):
@@ -185,6 +192,7 @@ $ cd openwhisk-debug-nodejs/functions/docker
 $ docker-compose down
 ```
 
+---
 **Deployment and Invocation**
 
 In order to deploy the functions to IBM Cloud Functions, replace 'your-ibm-cloud-organization', 'your-ibm-cloud-space' and 'dockerhub-name' and run the following commands:
@@ -200,11 +208,12 @@ $ bx wsk action create actionDocker --docker <dockerhub-name>/openwhisk-docker-n
 $ bx wsk action invoke --blocking actionDocker --param name Niklas
 ```
 
-
+---
 ## Debugging dockerized Functions
 
 You can run and debug the same dockerized function [function.js](functions/docker/function.js) in your local Node.js runtime without Docker.
 
+---
 **Debugging**
 
 Run these commands to install the dependencies:
@@ -223,17 +232,19 @@ $ cd openwhisk-debug-nodejs
 $ node runDockerFunction.js
 ```
 
+---
 **Deployment and Invocation**
 
 See above. This is identical to 'Debugging Functions in Docker Containers'.
 
-
+---
 ## Debugging TypeScript Functions in Docker Containers
 
 There is a sample function [function.ts](functions/typescript/src/function.ts) that shows how to write an OpenWhisk function in TypeScript running in a container by implementing the endpoints '/init' and '/run'.
 
 The function can be changed in the IDE without having to restart the container after every change. Instead a mapped volume is used to share the files between the IDE and the container and [nodemon](https://github.com/remy/nodemon) restarts the Node application in the container automatically when files change.
 
+---
 **Debugging**
 
 Run the launch configurations 'typescript function' to start the container and to attach the debugger - see [screenshot](https://github.com/nheidloff/openwhisk-debug-nodejs/blob/master/images/debugging-typescript.png).
@@ -253,7 +264,7 @@ After you're done stop the container via these commands in the first terminal.
 $ cd openwhisk-debug-nodejs/functions/typescript
 $ docker-compose down
 ```
-
+---
 **Deployment and Invocation**
 
 In order to deploy the functions to IBM Cloud Functions, replace 'your-ibm-cloud-organization', 'your-ibm-cloud-space' and 'dockerhub-name' and run the following commands:
@@ -269,8 +280,8 @@ $ bx wsk action create actionTypeScript --docker <dockerhub-name>/openwhisk-dock
 $ bx wsk action invoke --blocking actionTypeScript --param name Niklas
 ```
 
-
-## Resources
+---
+## Additional Resources
 
 To find out more about how to develop OpenWhisk functions locally, check out the following resources:
 
