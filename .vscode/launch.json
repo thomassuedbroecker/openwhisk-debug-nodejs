@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [        
+        
         {
             "args": [
                 "./functions/singleFile/function.js",
@@ -12,6 +13,20 @@
             "type": "node",
             "request": "launch",
             "name": "function.js",
+            "program": "${workspaceFolder}/run.js",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
+        },
+        // Custom configuration for the analysis
+        {
+            "args": [
+                "./functions/singleFile/analysis.js",
+                "./payloads/custom-payload.json"
+            ],
+            "type": "node",
+            "request": "launch",
+            "name": "analysis.js",
             "program": "${workspaceFolder}/run.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"

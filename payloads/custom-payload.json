@@ -1,0 +1,13 @@
+ { 
+  "_my_comments":"Get the actual version of the document inside the database: https://fbef5830-54a5-4374-a404-b67af5a75ead-bluemix.cloudant.com/dashboard.html#/database/image_db/_all_docs",
+  "functionsHost":"openwhisk.ng.bluemix.net",
+  "functionsAuth":"8576ab87-5158-48f0-b4c4-76d0d4ee5e7d:FdARqfYnoLoAWW6baZUowPTi6FoDByuVbLMElWkNakwcrUtRNthJrmTlSsXsxQlt",
+  "watsonClassifiers":"OilPipeCondition_1306725262",
+  "changes":[{"rev":"4-f7ea69f56e6b2a4556939b8812afaf6a"}],
+  "dbname":"image_db",
+  "id":"672f73eb9234864e8bd0fae8fce5a65f",
+  "cloudantDbName":"image_db",
+  "seq":"216-g1AAAAfLeJy91M1NwzAUB_CIIoGEgIoL3OAKUoq_8tET3QA2AD_bUVW1DaLtGTaADWAD2AA2gA1gA9gg2HkRUW4NkitFjhQn76f4_-xxEATdYUcHxxpUfmMGGtIeTEKlwsUsnOWL-TCktKfG-ULL6bw3NfOx_WRNBrBbFMVo2JF7E_tgIxVZLDRtU6jJimVY6NoRDit5s5Sl4Fpz3qZWU2ZLyUdOPq3knVKOgMhI8ja1nHzy97adXIYmjj6r6O2SplwxRWSrYv-IGQaOPm8kTRSYFITvpC-cfFnJ3VLuq5Rpe3lO-srJeaPHWGybLAbvSV87-rait5AWhiRS-056um7H4M7erH5fN5oQlKSZ8Zw26g-oP9brzlkmiAbPiaP-hPpzrceQGCki36kj_4L8a81riJUBtZrk35B_r_c5SxLKvJ_oqH-g_ln_vFC8Hyd6Jcl_of7t9AM8XvtZShhbTfI_yJd7fh8bT9AIVLvkR79qB3wf",
+  "watsonKey":"1rQjeUXGjcyCsykJfdVD420Gqs0lTWEMxTrogAjafWxj",
+  "cloudantUrl":"https://fbef5830-54a5-4374-a404-b67af5a75ead-bluemix:2ca9f5be6772ec36b31e1de338062a17db9641925c12c8bb3f3a5c224e25dc59@fbef5830-54a5-4374-a404-b67af5a75ead-bluemix.cloudant.com"
+ }

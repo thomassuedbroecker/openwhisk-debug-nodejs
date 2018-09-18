@@ -26,6 +26,7 @@
 function main(args) {
     console.log("Analysis Action called");
     console.log("Args:" + JSON.stringify(args));
+    var own_debug = true;
 
     // require the openwhisk npm package
     var ow = require('openwhisk');
@@ -50,9 +51,10 @@ function main(args) {
     var request = require('request');
     // nothing to do on deletion or update event
     if (cloudantDocument.args.deleted) {
-        //console.log("[", cloudantDocument.args.id, "] Ignored, it was deleted");
+        console.log("[", cloudantDocument.args.id, "] Ignored, it was deleted");
         return {status : "Ignoring cloudant change feed since it was for document deletion"};
-    } else if (newdocpattern.test(cloudantDocument.args.changes[0].rev)){
+    } else if ( own_debug == true) {
+        // if (newdocpattern.test(cloudantDocument.args.changes[0].rev)) { 
         console.log("New cloudant doc detected!");
         var cloudant = require("cloudant")(cloudantDocument.args.cloudantUrl);
         var db = cloudant.db.use(cloudantDocument.args.cloudantDbName);
