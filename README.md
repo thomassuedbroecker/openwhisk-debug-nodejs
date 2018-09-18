@@ -45,11 +45,11 @@ You don't need to use Docker to debug functions unless you want to write your fu
 [->](#part01)
 Five different scenarios are supported by the different debugging configurations.
 
-* *Single file JavaScript* functions (synch and asynch)
-* *Zipped JavaScript functions* with additional npm dependencies
-* *JavaScript* functions running in *Docker containers*
-* *Dockerized JavaScript functions* running in the local Node.js runtime
-* *TypeScript functions* running in Docker containers
+* **Single file JavaScript** functions (synch and asynch)
+* **Zipped JavaScript functions** with additional npm dependencies
+* **JavaScript** functions running in **Docker containers**
+* **Dockerized JavaScript functions** running in the local Node.js runtime
+* **TypeScript functions** running in Docker containers
 
 The following screenshot shows how functions that run in **Docker** can be debugged from Visual Studio Code. In order to do this, a volume is used to share the files between the IDE and the container and VS Code attaches a **remote debugger** to the **Docker container**. 
 
