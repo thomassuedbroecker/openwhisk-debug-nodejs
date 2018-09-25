@@ -3,3 +3,4 @@ package-lock.json
 demos.txt
 functions/zip/function.zip
 bx*.sh
+custom-payload*.json
