@@ -26,7 +26,6 @@
 function main(args) {
     console.log("Analysis Action called");
     console.log("Args:" + JSON.stringify(args));
-    var own_debug = true;
 
     // require the openwhisk npm package
     var ow = require('openwhisk');
@@ -35,6 +34,11 @@ function main(args) {
     var apiHost = args.functionsHost;
     var namespace = "_";
     var auth = args.functionsAuth;
+    if (args.own_debug === 'undefined'){
+        var own_debug = false;
+    } else {
+        var own_debug = args.own_debug;
+    }
 
     // generate api_key from auth
     var base64Auth = new Buffer(auth).toString('base64');
@@ -49,12 +53,13 @@ function main(args) {
     cloudantDocument.args = args;
     var fs = require('fs');
     var request = require('request');
+    
     // nothing to do on deletion or update event
     if (cloudantDocument.args.deleted) {
-        console.log("[", cloudantDocument.args.id, "] Ignored, it was deleted");
+        //console.log("[", cloudantDocument.args.id, "] Ignored, it was deleted");
         return {status : "Ignoring cloudant change feed since it was for document deletion"};
-    } else if ( own_debug == true) {
-        // if (newdocpattern.test(cloudantDocument.args.changes[0].rev)) { 
+    } else if (own_debug == true||
+               newdocpattern.test(cloudantDocument.args.changes[0].rev)==true){
         console.log("New cloudant doc detected!");
         var cloudant = require("cloudant")(cloudantDocument.args.cloudantUrl);
         var db = cloudant.db.use(cloudantDocument.args.cloudantDbName);
@@ -64,6 +69,7 @@ function main(args) {
         //get document from cloudant
         var p0 = function(cloudantDocument) {
             console.log("Getting doc from Cloudant");
+            console.log("p0:" + JSON.stringify(cloudantDocument));
             var promise = new Promise(function(resolve, reject) {
                                       db.get(cloudantDocument.args.id, null, function(error, response) {
                                              if (!error) {
@@ -74,22 +80,30 @@ function main(args) {
                                              cloudantDocument = response;
 
                                              console.log("Entered Main Analysis Implementation");
+                                                console.log("own_debug:",own_debug);
+                                                if (own_debug==false){
+                                                    
+                                                    if (cloudantDocument.hasOwnProperty("_id") &&
+                                                        cloudantDocument.type == "image_db.image" &&
+                                                        !cloudantDocument.hasOwnProperty("analysis") &&
+                                                        cloudantDocument.hasOwnProperty("_attachments") &&
+                                                        cloudantDocument._attachments.hasOwnProperty("image.jpg") &&
+                                                        !cloudantDocument._attachments.hasOwnProperty("thumbnail.jpg")) {
 
-                                             if (cloudantDocument.hasOwnProperty("_id") &&
-                                                 cloudantDocument.type == "image_db.image" &&
-                                                 !cloudantDocument.hasOwnProperty("analysis") &&
-                                                 cloudantDocument.hasOwnProperty("_attachments") &&
-                                                 cloudantDocument._attachments.hasOwnProperty("image.jpg") &&
-                                                 !cloudantDocument._attachments.hasOwnProperty("thumbnail.jpg")) {
+                                                    console.log("DOC EXISTS!");
+                                                    var imageDocumentId = cloudantDocument._id;
+                                                    console.log("[", imageDocumentId, "] Processing image.jpg from document");
 
-                                             console.log("DOC EXISTS!");
-                                             var imageDocumentId = cloudantDocument._id;
-                                             console.log("[", imageDocumentId, "] Processing image.jpg from document");
-
-                                             resolve(cloudantDocument);
-                                             } else {
-                                             return {status: "Document did not contain correct properties, ignoring"};
-                                             }
+                                                    resolve(cloudantDocument);
+                                                    } else {
+                                                    console.log("Document did not contain correct properties, ignoring");
+                                                    return {status: "Document did not contain correct properties, ignoring"};
+                                                    }
+                                                } else {
+                                                    var imageDocumentId = cloudantDocument._id;
+                                                    console.log("[", imageDocumentId, "] Processing image.jpg from document");
+                                                    resolve(cloudantDocument);
+                                                }
 
                                              } else {
                                              console.log("Error getting document");
@@ -103,7 +117,13 @@ function main(args) {
 
         var p1 = function(cloudantDocument) {
             console.log("Initial doc and args here: " + JSON.stringify(cloudantDocument));
+            console.log("p1:" + JSON.stringify(cloudantDocument));
+
             var promise = new Promise(function(resolve, reject) {
+                                      if (own_debug==true){
+                                          console.log("imageDocumentId:" + JSON.stringify(cloudantDocument));
+                                          var imageDocumentId = cloudantDocument._id;
+                                      }
                                       db.get(imageDocumentId, null, function(error, response) {
                                              if (!error) {
                                              console.log('read success', response);
@@ -117,22 +137,9 @@ function main(args) {
             return promise;
         };
 
-        //Enrich cloudant document with Weather Data
-        var p8 = function(cloudantDocument) {
-            var promise = new Promise(function(resolve, reject) {
-                                      cloudantDocument.weather = {};
-                                      if (true) {
-                                            resolve(cloudantDocument);
-                                          }
-                                          else {
-                                            reject(Error("It broke"));
-                                          }
-                                      });
-            return promise;
-        };
-
         //Get Attachment from Cloudant
         var p2 = function(cloudantDocument) {
+            console.log("p2:" + JSON.stringify(cloudantDocument));
             console.log("After enriching data with Weather: " + JSON.stringify(cloudantDocument));
             fileName = cloudantDocument._id + "-image.jpg";
             var promise = new Promise(function(resolve, reject) {
@@ -148,118 +155,158 @@ function main(args) {
                                       });
             return promise;
         };
-
-        //Process Thumbnail
-        var p3 = function(cloudantDocument) {
-            thumbFileName = cloudantDocument._id + "-thumbnail.jpg";
-            var promise = new Promise(function(resolve, reject) {
-                                      console.log("generating thumbnail");
-                                      processThumbnail(cloudantDocument, fileName, thumbFileName, function (err, cloudantDocument, thumbFileName) {
-                                                       if (err) {
-                                                       console.log("Rejecting processThumbnail");
-                                                       reject(err);
-                                                       } else {
-                                                       console.log("Resolving processThumbnail" + JSON.stringify(cloudantDocument));
-                                                       resolve(cloudantDocument);
-                                                       }
-                                                       });
-                                      });
-            return promise;
-        };
-
-        //Process Image
+        
+        if (own_debug==false){
+            //Process Thumbnail
+            var p3 = function(cloudantDocument) {
+                thumbFileName = cloudantDocument._id + "-thumbnail.jpg";
+                console.log("p3:" + JSON.stringify(cloudantDocument));
+                var promise = new Promise(function(resolve, reject) {
+                                        console.log("generating thumbnail");
+                                        processThumbnail(cloudantDocument, fileName, thumbFileName, function (err, cloudantDocument, thumbFileName) {
+                                                        if (err) {
+                                                        console.log("Rejecting processThumbnail");
+                                                        reject(err);
+                                                        } else {
+                                                        console.log("Resolving processThumbnail" + JSON.stringify(cloudantDocument));
+                                                        resolve(cloudantDocument);
+                                                        }
+                                                        });
+                                        });
+                return promise;
+            };
+        }
+    
+        //Process Image using watson visual recognition
         var p4 = function(cloudantDocument) {
-            var promise = new Promise(function(resolve, reject) {
-                                      console.log("processing & analyzing image")
-                                      processImage(cloudantDocument, fileName, function (err, analysis) {
-                                                   if (err) {
-                                                   console.log("Rejecting processImage");
-                                                   reject(err);
-                                                   } else {
-                                                   console.log("Resolving processImage");
-                                                   cloudantDocument.analysis = analysis;
-                                                   //console.log("Document info: " + JSON.stringify(cloudantDocument));
-                                                   resolve(cloudantDocument);
-                                                   }
-                                                   });
+                console.log("p4:" + JSON.stringify(cloudantDocument));
+                var promise = new Promise(function(resolve, reject) {
+                                        console.log("processing & analyzing image")
+                                        processImage(cloudantDocument, fileName, function (err, analysis) {
+                                                    if (err) {
+                                                    console.log("Rejecting processImage");
+                                                    reject(err);
+                                                    } else {
+                                                    console.log("Resolving processImage");
+                                                    cloudantDocument.analysis = analysis;
+                                                    //console.log("Document info: " + JSON.stringify(cloudantDocument));
+                                                    resolve(cloudantDocument);
+                                                    }
+                                                    });
 
-                                      });
-            return promise;
+                                        });
+                return promise;
         };
 
-        //Insert data into Cloudant
-        var p5 = function(cloudantDocument) {
+        if (own_debug==false){
+            console.log("p5:" + JSON.stringify(cloudantDocument));
+            //Insert data into Cloudant
+            var p5 = function(cloudantDocument) {
+                var promise = new Promise(function(resolve, reject) {
+                                        console.log("Updating document: " + cloudantDocument._id + ", rev: " + cloudantDocument._rev)
+                                        db.insert(cloudantDocument, function (err, body, headers) {
+                                                    if (err) {
+                                                    console.log("Error reached while trying to update document");
+                                                    reject(err);
+                                                    } else {
+                                                    //console.log("BODY AFTER UUPDATE IS: " + JSON.stringify(body));
+                                                    //console.log("HEADERS AFTER UUPDATE IS: " + JSON.stringify(headers));
+                                                    cloudantDocument._rev = body.rev;
+                                                    console.log("doc after update is: " + JSON.stringify(cloudantDocument));
+                                                    resolve(cloudantDocument);
+                                                    }
+                                                    });
+                                        });
+                return promise;
+            };
+
+            //Insert attachment
+            var p6 = function(cloudantDocument) {
+                console.log("p6:" + JSON.stringify(cloudantDocument));
+                var promise = new Promise(function(resolve, reject) {
+                                        console.log("saving thumbnail: " + thumbFileName + " to:");
+                                        //console.log(JSON.stringify(cloudantDocument));
+
+                                        fs.readFile(thumbFileName, function(err, data) {
+                                                    if (err) {
+                                                    reject(err);
+                                                    } else {
+                                                    console.log("ONE DB IS : " + JSON.stringify(db));
+                                                    db.attachment.insert(cloudantDocument._id, 'thumbnail.jpg', data, 'image/jpg', {rev:cloudantDocument._rev}, function(err, body) {
+                                                                        console.log("insert complete");
+                                                                        //console.log(body);
+
+                                                                        //remove thumb file after saved to cloudant
+                                                                        var fs = require('fs');
+                                                                        fs.unlink(thumbFileName);
+
+                                                                        if (err) {
+                                                                        console.log("ERROR DURING ATTACHMENT INSERT");
+                                                                        console.log(err);
+                                                                        reject(err);
+                                                                        } else {
+                                                                        console.log("saved thumbnail");
+                                                                        //console.log("Body is: " + JSON.stringify(body));
+                                                                        cloudantDocument._rev = body.rev;
+                                                                        console.log("Doc: " + JSON.stringify(cloudantDocument));
+
+                                                                        resolve(cloudantDocument);
+                                                                        }
+                                                                        });
+                                                    }
+                                                    });
+                                        });
+                return promise;
+            };
+
+            //Process faces
+            var p7 = function(cloudantDocument) {
+                console.log("p7:" + JSON.stringify(cloudantDocument));
+                var promise = new Promise(function(resolve, reject) {
+                                        console.log("Processing faces");
+                                        processFaces(cloudantDocument, fileName, db, cloudantDocument.analysis, function (err) {
+                                                    var fs = require('fs');
+                                                    fs.unlink(fileName);
+                                                    console.log("Finished processing faces");
+                                                    resolve(cloudantDocument);
+                                                    });
+                                        });
+                return promise;
+            };
+
+
+            //Enrich cloudant document with Weather Data
+            var p8 = function(cloudantDocument) {
+            console.log("p7:" + JSON.stringify(cloudantDocument));
             var promise = new Promise(function(resolve, reject) {
-                                      console.log("Updating document: " + cloudantDocument._id + ", rev: " + cloudantDocument._rev)
-                                      db.insert(cloudantDocument, function (err, body, headers) {
-                                                if (err) {
-                                                console.log("Error reached while trying to update document");
-                                                reject(err);
-                                                } else {
-                                                //console.log("BODY AFTER UUPDATE IS: " + JSON.stringify(body));
-                                                //console.log("HEADERS AFTER UUPDATE IS: " + JSON.stringify(headers));
-                                                cloudantDocument._rev = body.rev;
-                                                console.log("doc after update is: " + JSON.stringify(cloudantDocument));
-                                                resolve(cloudantDocument);
-                                                }
-                                                });
+                                      cloudantDocument.weather = {};
+                                      if (true) {
+                                            resolve(cloudantDocument);
+                                          }
+                                          else {
+                                            reject(Error("It broke"));
+                                          }
                                       });
             return promise;
-        };
-
-        //Insert attachment
-        var p6 = function(cloudantDocument) {
-            var promise = new Promise(function(resolve, reject) {
-                                      console.log("saving thumbnail: " + thumbFileName + " to:");
-                                      //console.log(JSON.stringify(cloudantDocument));
-
-                                      fs.readFile(thumbFileName, function(err, data) {
-                                                  if (err) {
-                                                  reject(err);
-                                                  } else {
-                                                  console.log("ONE DB IS : " + JSON.stringify(db));
-                                                  db.attachment.insert(cloudantDocument._id, 'thumbnail.jpg', data, 'image/jpg', {rev:cloudantDocument._rev}, function(err, body) {
-                                                                       console.log("insert complete");
-                                                                       //console.log(body);
-
-                                                                       //remove thumb file after saved to cloudant
-                                                                       var fs = require('fs');
-                                                                       fs.unlink(thumbFileName);
-
-                                                                       if (err) {
-                                                                       console.log("ERROR DURING ATTACHMENT INSERT");
-                                                                       console.log(err);
-                                                                       reject(err);
-                                                                       } else {
-                                                                       console.log("saved thumbnail");
-                                                                       //console.log("Body is: " + JSON.stringify(body));
-                                                                       cloudantDocument._rev = body.rev;
-                                                                       console.log("Doc: " + JSON.stringify(cloudantDocument));
-
-                                                                       resolve(cloudantDocument);
-                                                                       }
-                                                                       });
-                                                  }
-                                                  });
-                                      });
-            return promise;
-        };
-
-        //Process faces
-        var p7 = function(cloudantDocument) {
-            var promise = new Promise(function(resolve, reject) {
-                                      console.log("Processing faces");
-                                      processFaces(cloudantDocument, fileName, db, cloudantDocument.analysis, function (err) {
-                                                   var fs = require('fs');
-                                                   fs.unlink(fileName);
-                                                   console.log("Finished processing faces");
-                                                   resolve(cloudantDocument);
-                                                   });
-                                      });
-            return promise;
-        };
-
-        return p0(cloudantDocument).then(p8).then(p2).then(p3).then(p4).then(p5).then(p6).then(p7);
+            };
+        }
+        
+        // Just return the watson visual recognition value when the parameter debug is true.
+        // p0 and p1 - get document from cloudant
+        // p2 - Get Attachment from Cloudant
+        // p3 - Process Thumbnail
+        // p4 - Process Image using watson visual recognition
+        // p5 - Insert data into Cloudant
+        // P6 - Insert attachment
+        // P7 - Process faces
+        // P8 - Enrich cloudant document with Weather Data
+        // How to use this: https://javascript.info/promise-chaining
+        console.log("own_debug:",own_debug);                                                    
+        if (own_debug==false){
+            return p0(cloudantDocument).then(p8).then(p2).then(p3).then(p4).then(p5).then(p6).then(p7);
+        } else {
+            return p0(cloudantDocument).then(p1).then(p2).then(p4);
+        }
 
     } else {
         //console.log("Cloudant update detected, ignoring");
