@@ -4,7 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [        
-        
+        // Samples for single files
         {
             "args": [
                 "./functions/singleFile/function.js",
@@ -32,6 +32,34 @@
                 "${workspaceFolder}/**/*.js"
             ]
         },
+        // Custom configuration for the scoreAPI
+        {
+            "args": [
+                "./functions/singleFile/scoreAPI_listScore.js",
+                "./payloads/custom-payload-getscorelist.json"
+            ],
+            "type": "node",
+            "request": "launch",
+            "name": "scoreAPI_listScore.js",
+            "program": "${workspaceFolder}/run.js",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
+        },
+        {
+            "args": [
+                "./functions/singleFile/scoreAPI_addScore.js",
+                "./payloads/custom-payload-addscore.json"
+            ],
+            "type": "node",
+            "request": "launch",
+            "name": "scoreAPI_addScore.js",
+            "program": "${workspaceFolder}/run.js",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
+        },
+        // Sample for asynch function
         {
             "args": [
                 "./functions/singleFile/functionAsynch.js",
